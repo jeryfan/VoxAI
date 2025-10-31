@@ -1,5 +1,6 @@
 package com.voxai.presentation.voicecloning
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -401,6 +402,7 @@ fun CustomModelItem(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun QualitySettingsCard(
     qualitySettings: VoiceQualitySettings,
@@ -475,6 +477,7 @@ fun QualitySettingsCard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VoiceTrainingDialog(
     isVisible: Boolean,
@@ -496,7 +499,7 @@ fun VoiceTrainingDialog(
             text = {
                 if (isTraining) {
                     Column(
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         CircularProgressIndicator(progress = progress)

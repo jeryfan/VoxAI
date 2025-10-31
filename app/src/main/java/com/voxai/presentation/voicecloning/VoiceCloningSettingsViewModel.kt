@@ -3,6 +3,7 @@ package com.voxai.presentation.voicecloning
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.voxai.domain.manager.VoiceCloningManager
+import com.voxai.domain.manager.VoiceCloningConfig
 import com.voxai.domain.model.*
 import com.voxai.util.audio.AdvancedVoiceCloningProcessor
 import com.voxai.util.audio.CustomVoiceModel
