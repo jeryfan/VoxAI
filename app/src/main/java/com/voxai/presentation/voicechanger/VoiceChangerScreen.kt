@@ -22,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.voxai.domain.model.*
-import kotlin.ranges.FloatRange
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
