@@ -7,7 +7,9 @@ import com.voxai.data.local.ChatMessageDao
 import com.voxai.data.local.VoxAIDatabase
 import com.voxai.data.remote.OpenAIApiService
 import com.voxai.data.repository.ChatRepositoryImpl
+import com.voxai.domain.manager.VoiceCloningManager
 import com.voxai.domain.repository.ChatRepository
+import com.voxai.util.audio.AdvancedVoiceCloningProcessor
 import com.voxai.util.audio.AudioPlayer
 import com.voxai.util.audio.AudioRecorder
 import com.voxai.util.audio.VoiceEffectProcessor
@@ -114,5 +116,19 @@ object AppModule {
     @Singleton
     fun provideVoiceEffectProcessor(): VoiceEffectProcessor {
         return VoiceEffectProcessor()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAdvancedVoiceCloningProcessor(): AdvancedVoiceCloningProcessor {
+        return AdvancedVoiceCloningProcessor()
+    }
+
+    @Provides
+    @Singleton
+    fun provideVoiceCloningManager(
+        voiceCloningProcessor: AdvancedVoiceCloningProcessor
+    ): VoiceCloningManager {
+        return VoiceCloningManager(voiceCloningProcessor)
     }
 }

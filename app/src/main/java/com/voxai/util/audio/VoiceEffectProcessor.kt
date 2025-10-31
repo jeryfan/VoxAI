@@ -1,13 +1,22 @@
 package com.voxai.util.audio
 
 import com.voxai.domain.model.VoiceEffect
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.sin
 
 class VoiceEffectProcessor {
-
+    
+    private val advancedProcessor = AdvancedVoiceCloningProcessor()
+    private val processingScope = CoroutineScope(Dispatchers.Default)
+    
+    /**
+     * 应用音效（保持向后兼容）
+     */
     fun applyEffect(audioData: ByteArray, effect: VoiceEffect): ByteArray {
         if (effect == VoiceEffect.NONE) {
             return audioData
@@ -23,6 +32,17 @@ class VoiceEffectProcessor {
         }
 
         return shortsToBytes(processed)
+    }
+    
+    /**
+     * 应用高级音效（支持声音克隆）
+     */
+    suspend fun applyAdvancedEffect(
+        audioData: ByteArray, 
+        effect: VoiceEffect,
+        customVoiceModel: CustomVoiceModel? = null
+    ): ByteArray {
+        return advancedProcessor.applyAdvancedEffect(audioData, effect, customVoiceModel)
     }
 
     private fun applyPitchShift(samples: ShortArray, pitchShift: Float): ShortArray {
