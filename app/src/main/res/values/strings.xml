@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VoxAI</string>
+    
+    <!-- Navigation -->
+    <string name="nav_voice_changer">变声器</string>
+    <string name="nav_ai_chat">AI聊天</string>
+    <string name="nav_settings">设置</string>
+    
+    <!-- Voice Changer -->
+    <string name="voice_changer_title">变声器</string>
+    <string name="start_recording">开始录音</string>
+    <string name="stop_recording">停止录音</string>
+    <string name="play_audio">播放</string>
+    <string name="pause_audio">暂停</string>
+    <string name="save_audio">保存</string>
+    <string name="share_audio">分享</string>
+    <string name="import_audio">导入音频</string>
+    <string name="recording_time">录音时长: %s</string>
+    <string name="no_audio">暂无音频</string>
+    
+    <!-- Voice Effects -->
+    <string name="effect_none">原声</string>
+    <string name="effect_male">男声</string>
+    <string name="effect_female">女声</string>
+    <string name="effect_child">儿童声</string>
+    <string name="effect_robot">机器人</string>
+    <string name="effect_monster">怪物</string>
+    <string name="effect_alien">外星人</string>
+    <string name="effect_deep">低沉</string>
+    <string name="effect_chipmunk">花栗鼠</string>
+    
+    <!-- AI Chat -->
+    <string name="ai_chat_title">AI聊天</string>
+    <string name="message_hint">输入消息...</string>
+    <string name="send">发送</string>
+    <string name="voice_message">语音消息</string>
+    <string name="clear_chat">清空聊天</string>
+    <string name="ai_thinking">AI正在思考...</string>
+    <string name="ai_error">AI回复出错，请重试</string>
+    <string name="network_error">网络连接失败</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">设置</string>
+    <string name="settings_general">通用设置</string>
+    <string name="settings_audio">音频设置</string>
+    <string name="settings_ai">AI设置</string>
+    <string name="settings_about">关于</string>
+    
+    <string name="theme">主题</string>
+    <string name="theme_light">浅色</string>
+    <string name="theme_dark">深色</string>
+    <string name="theme_system">跟随系统</string>
+    
+    <string name="audio_quality">音频质量</string>
+    <string name="audio_quality_low">低</string>
+    <string name="audio_quality_medium">中</string>
+    <string name="audio_quality_high">高</string>
+    
+    <string name="ai_model">AI模型</string>
+    <string name="ai_api_key">API密钥</string>
+    <string name="ai_api_key_hint">输入OpenAI API密钥</string>
+    <string name="ai_enable_tts">启用语音回复</string>
+    <string name="ai_apply_voice_effect">对AI回复应用变声</string>
+    
+    <string name="version">版本</string>
+    <string name="version_name">1.0.0</string>
+    
+    <!-- Permissions -->
+    <string name="permission_required">需要权限</string>
+    <string name="permission_audio_rationale">需要录音权限才能使用变声功能</string>
+    <string name="permission_storage_rationale">需要存储权限才能保存和导入音频文件</string>
+    <string name="permission_denied">权限被拒绝</string>
+    <string name="grant_permission">授予权限</string>
+    <string name="cancel">取消</string>
+    
+    <!-- Common -->
+    <string name="ok">确定</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="delete">删除</string>
+    <string name="confirm">确认</string>
+    <string name="error">错误</string>
+    <string name="success">成功</string>
+    <string name="loading">加载中...</string>
+    <string name="saved_successfully">保存成功</string>
+    <string name="save_failed">保存失败</string>
+</resources>

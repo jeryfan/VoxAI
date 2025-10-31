@@ -1,0 +1,11 @@
+## This file must *NOT* be checked into Version Control Systems,
+# as it contains information specific to your local configuration.
+#
+# Location of the Android SDK. For Mac/Linux, this is usually:
+# sdk.dir=/Users/USERNAME/Library/Android/sdk
+# For Windows:
+# sdk.dir=C\:\\Users\\USERNAME\\AppData\\Local\\Android\\sdk
+
+# OpenAI API Key for AI Chat functionality
+# Get your API key from: https://platform.openai.com/api-keys
+OPENAI_API_KEY=your_openai_api_key_here
