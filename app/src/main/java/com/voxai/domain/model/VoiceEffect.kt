@@ -1,5 +1,7 @@
 package com.voxai.domain.model
 
+import kotlin.ranges.FloatRange
+
 enum class VoiceEffect(
     val displayName: String, 
     val pitchShift: Float, 

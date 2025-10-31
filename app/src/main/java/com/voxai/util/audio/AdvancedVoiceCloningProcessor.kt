@@ -343,6 +343,10 @@ class VoiceFeatureExtractor {
  */
 class NeuralAudioSynthesizer {
     
+    companion object {
+        private const val SAMPLE_RATE = 44100
+    }
+    
     fun synthesize(features: VoiceFeatures): ByteArray {
         // 使用神经网络合成音频
         val samples = synthesizeFromFeatures(features)
@@ -351,7 +355,7 @@ class NeuralAudioSynthesizer {
     
     private fun synthesizeFromFeatures(features: VoiceFeatures): ShortArray {
         val durationSeconds = 2.0 // 假设2秒音频
-        val numSamples = (durationSeconds * SAMPLE_RATE).toInt()
+        val numSamples = (durationSeconds * SAMPLE_RATE.toDouble()).toInt()
         val samples = ShortArray(numSamples)
         
         for (i in samples.indices) {
@@ -364,7 +368,7 @@ class NeuralAudioSynthesizer {
             // 添加共振峰
             for ((index, formant) in features.formants.withIndex()) {
                 val formantPhase = 2 * PI * formant * time
-                sample += sin(formantPhase).toFloat() * 0.3f / (index + 1)
+                sample += sin(formantPhase).toFloat() * 0.3f / (index + 1).toFloat()
             }
             
             // 应用能量

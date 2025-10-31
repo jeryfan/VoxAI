@@ -21,7 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import com.voxai.domain.model.VoiceEffect
+import com.voxai.domain.model.*
+import kotlin.ranges.FloatRange
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -114,7 +115,7 @@ fun VoiceChangerScreen(
             progress = uiState.trainingProgress,
             message = uiState.trainingMessage,
             onDismiss = { viewModel.hideCustomModelDialog() },
-            onTrain = { name, samples, characteristics ->
+            onTrain = { name: String, samples: List<ByteArray>, characteristics: VoiceCharacteristics ->
                 viewModel.trainCustomVoiceModel(name, samples, characteristics)
             }
         )
@@ -316,6 +317,7 @@ fun VoiceEffectsSection(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EffectChip(
     effect: VoiceEffect,
@@ -383,6 +385,7 @@ fun PlaybackSection(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomModelChip(
     isSelected: Boolean,
@@ -469,6 +472,7 @@ fun SelectedCustomModelCard(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomModelTrainingDialog(
     isVisible: Boolean,
