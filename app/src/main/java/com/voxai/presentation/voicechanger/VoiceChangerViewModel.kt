@@ -2,10 +2,11 @@ package com.voxai.presentation.voicechanger
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.voxai.domain.model.AudioData
-import com.voxai.domain.model.VoiceEffect
+import com.voxai.domain.manager.VoiceCloningManager
+import com.voxai.domain.model.*
 import com.voxai.util.audio.AudioPlayer
 import com.voxai.util.audio.AudioRecorder
+import com.voxai.util.audio.CustomVoiceModel
 import com.voxai.util.audio.VoiceEffectProcessor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class VoiceChangerViewModel @Inject constructor(
     private val audioRecorder: AudioRecorder,
     private val audioPlayer: AudioPlayer,
-    private val voiceEffectProcessor: VoiceEffectProcessor
+    private val voiceEffectProcessor: VoiceEffectProcessor,
+    private val voiceCloningManager: VoiceCloningManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(VoiceChangerUiState())
@@ -31,6 +33,10 @@ class VoiceChangerViewModel @Inject constructor(
     private var recordingJob: Job? = null
     private val recordedDataStream = ByteArrayOutputStream()
     private var recordingStartTime = 0L
+    
+    init {
+        loadCustomModels()
+    }
 
     fun startRecording() {
         if (_uiState.value.isRecording) return
@@ -90,10 +96,21 @@ class VoiceChangerViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val processedData = voiceEffectProcessor.applyEffect(
-                    currentAudio.data,
-                    effect
-                )
+                val processedData = if (effect.effectType == VoiceEffectType.BASIC) {
+                    // 使用基础处理器
+                    voiceEffectProcessor.applyEffect(currentAudio.data, effect)
+                } else {
+                    // 使用高级声音克隆处理器
+                    val customModel = if (effect == VoiceEffect.CUSTOM) {
+                        _uiState.value.selectedCustomModel
+                    } else null
+                    
+                    voiceEffectProcessor.applyAdvancedEffect(
+                        currentAudio.data,
+                        effect,
+                        customModel
+                    )
+                }
 
                 val processedAudio = AudioData(
                     id = UUID.randomUUID().toString(),
@@ -155,6 +172,82 @@ class VoiceChangerViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(error = null)
     }
 
+    // 自定义声音模型相关方法
+    fun loadCustomModels() {
+        voiceCloningManager.loadSavedModels()
+        _uiState.value = _uiState.value.copy(
+            customModels = voiceCloningManager.getCustomModels()
+        )
+    }
+    
+    fun selectCustomModel(model: CustomVoiceModel?) {
+        _uiState.value = _uiState.value.copy(
+            selectedCustomModel = model,
+            selectedEffect = if (model != null) VoiceEffect.CUSTOM else VoiceEffect.NONE
+        )
+    }
+    
+    fun deleteCustomModel(modelId: String) {
+        voiceCloningManager.deleteCustomModel(modelId)
+        loadCustomModels()
+        
+        // 如果删除的是当前选中的模型，清除选择
+        if (_uiState.value.selectedCustomModel?.id == modelId) {
+            _uiState.value = _uiState.value.copy(
+                selectedCustomModel = null,
+                selectedEffect = VoiceEffect.NONE
+            )
+        }
+    }
+    
+    fun trainCustomVoiceModel(
+        name: String,
+        trainingSamples: List<ByteArray>,
+        voiceCharacteristics: VoiceCharacteristics
+    ) {
+        _uiState.value = _uiState.value.copy(
+            isTrainingModel = true,
+            trainingProgress = 0f,
+            trainingMessage = "开始训练..."
+        )
+        
+        viewModelScope.launch {
+            voiceCloningManager.trainCustomVoiceModel(name, trainingSamples, voiceCharacteristics)
+                .onSuccess { model ->
+                    _uiState.value = _uiState.value.copy(
+                        isTrainingModel = false,
+                        trainingProgress = 0f,
+                        trainingMessage = "",
+                        showCustomModelDialog = false
+                    )
+                    loadCustomModels()
+                }
+                .onFailure { error ->
+                    _uiState.value = _uiState.value.copy(
+                        isTrainingModel = false,
+                        trainingProgress = 0f,
+                        trainingMessage = "",
+                        error = "训练失败: ${error.message}"
+                    )
+                }
+        }
+    }
+    
+    fun showCustomModelDialog() {
+        _uiState.value = _uiState.value.copy(showCustomModelDialog = true)
+    }
+    
+    fun hideCustomModelDialog() {
+        _uiState.value = _uiState.value.copy(showCustomModelDialog = false)
+    }
+    
+    fun updateTrainingProgress(progress: Float, message: String) {
+        _uiState.value = _uiState.value.copy(
+            trainingProgress = progress,
+            trainingMessage = message
+        )
+    }
+
     override fun onCleared() {
         super.onCleared()
         audioRecorder.stopRecording()
@@ -170,5 +263,11 @@ data class VoiceChangerUiState(
     val currentAudio: AudioData? = null,
     val processedAudio: AudioData? = null,
     val selectedEffect: VoiceEffect = VoiceEffect.NONE,
+    val selectedCustomModel: CustomVoiceModel? = null,
+    val customModels: List<CustomVoiceModel> = emptyList(),
+    val isTrainingModel: Boolean = false,
+    val trainingProgress: Float = 0f,
+    val trainingMessage: String = "",
+    val showCustomModelDialog: Boolean = false,
     val error: String? = null
 )
