@@ -1,7 +1,5 @@
 package com.voxai.domain.model
 
-import kotlin.ranges.FloatRange
-
 enum class VoiceEffect(
     val displayName: String, 
     val pitchShift: Float, 
@@ -53,7 +51,7 @@ data class VoiceCharacteristics(
     val gender: Gender,
     val age: Age,
     val accent: String? = null,
-    val pitch: FloatRange = 0.5f..2.0f,
+    val pitch: ClosedFloatingPointRange<Float> = 0.5f..2.0f,
     val formantShift: Float = 1.0f
 )
 
